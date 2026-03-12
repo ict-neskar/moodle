@@ -1,0 +1,4 @@
+data/
+.env
+html/
+.DS_Store
