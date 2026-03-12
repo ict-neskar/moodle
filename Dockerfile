@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libicu-dev \
     libxml2-dev \
-    && docker-php-ext-install pdo_pgsql pgsql gd intl soap exif ldap \
+    && docker-php-ext-install pdo_pgsql pgsql gd intl soap exif \
     && rm -rf /var/lib/apt/lists/*
 
 # Configure PHP settings for Moodle
