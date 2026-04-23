@@ -22,7 +22,7 @@ USER www-data
 
 WORKDIR /var/www/html
 
-RUN git clone --depth 1 -b MOODLE_500_STABLE git://git.moodle.org/moodle.git .
+RUN git clone --depth 1 -b MOODLE_502_STABLE git://git.moodle.org/moodle.git .
 
 ENV PHP_OPCACHE_ENABLE=1 \
     PHP_POST_MAX_SIZE=512M \
