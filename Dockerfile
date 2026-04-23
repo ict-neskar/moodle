@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM serversideup/php:8.4-fpm-nginx-debian
+FROM serversideup/php:8.4-frankenphp
 
 USER root
 
@@ -32,4 +32,3 @@ ENV PHP_OPCACHE_ENABLE=1 \
     NGINX_WEBROOT=/var/www/html/public
 
 COPY --chmod=755 ./entrypoint.d/ /etc/entrypoint.d
-COPY --chown=www-data:www-data ./nginx/site-opts.d/http.conf /etc/nginx/site-opts.d/http.conf

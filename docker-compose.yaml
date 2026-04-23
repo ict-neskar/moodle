@@ -5,6 +5,59 @@ services:
       - "8080:8080"
     env_file:
       - .env
+    environment:
+      CADDY_PHP_SERVER_OPTIONS: split .php
+      CADDY_SERVER_EXTRA_DIRECTIVES: |
+        request_body {
+            max_size 2048MB
+        }
+
+        request_body {
+                max_size 2048MB
+        }
+
+        ########################################################
+        # Moodle routing
+        ########################################################
+
+        # PHP files (with or without slash-argument path info) go straight to
+        # php_server — never rewrite them, or PATH_INFO is lost and
+        # styles.php / javascript.php return HTML instead of CSS/JS.
+        # Everything else that has no matching file falls back to r.php
+        # (Moodle's routing engine for clean URLs).
+        # PHP slash arguments: FrankenPHP does not set PATH_INFO, but Moodle's
+        # min_get_slash_argument() falls back to $_GET['file'] when PATH_INFO is
+        # empty. Rewrite /script.php/path/info → /script.php?file=/path/info so
+        # Moodle can locate the correct theme/JS file.
+        @php_pathinfo path_regexp phppi ^(.+\.php)(/.+)$
+        rewrite @php_pathinfo {http.regexp.phppi.1}?file={http.regexp.phppi.2}&{query}
+
+        # Non-PHP paths that have no matching file fall back to the routing engine.
+        # Also check for a directory index (try_files includes {path}/index.php) so
+        # that requests like / are served by index.php, not r.php.
+        @moodle_route {
+                not path_regexp \.php(/|$)
+                not file {
+                        try_files {path} {path}/index.php
+                }
+        }
+        rewrite @moodle_route /r.php?{query}
+
+        @dotfiles {
+            path /.*
+            not path /.well-known /.well-known/*
+        }
+        respond @dotfiles 404
+
+        @moodle_internals {
+            path_regexp internals (/vendor/|/node_modules/|composer\.json|/readme|/README|readme\.txt|/upgrade\.txt|/UPGRADING\.md|db/install\.xml|/fixtures/|/behat/|phpunit\.xml|\.lock|environment\.xml)
+        }
+        respond @moodle_internals 404
+
+        @dataroot {
+            path /dataroot/*
+        }
+        respond @dataroot 403
     depends_on:
       - db
     volumes:
