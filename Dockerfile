@@ -15,7 +15,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     libpng-dev \
     libicu-dev \
     libxml2-dev \
-    && docker-php-ext-install pdo_pgsql pgsql gd intl soap exif
+    && docker-php-ext-install pdo_pgsql pgsql gd intl soap exif xsl
 
 USER www-data
 
