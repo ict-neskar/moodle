@@ -22,6 +22,7 @@ USER www-data
 
 WORKDIR /var/www/html
 
+RUN rm -rf ./*
 RUN git clone --depth 1 -b MOODLE_502_STABLE git://git.moodle.org/moodle.git .
 
 ENV PHP_OPCACHE_ENABLE=1 \
