@@ -5,6 +5,40 @@ services:
       - "8080:8080"
     env_file:
       - .env
+    environment:
+      CADDY_SERVER_EXTRA_DIRECTIVES: |
+        request_body {
+            max_size 2048MB
+        }
+
+        @moodle_route {
+            not file {path}
+        }
+
+        rewrite @moodle_route /r.php
+
+        @dotfiles {
+            path /.*
+            not path /.well-known /.well-known/*
+        }
+        respond @dotfiles 404
+
+        @moodle_internals {
+            path_regexp internals (/vendor/|/node_modules/|composer\.json|/readme|/README|readme\.txt|/upgrade\.txt|/UPGRADING\.md|db/install\.xml|/fixtures/|/behat/|phpunit\.xml|\.lock|environment\.xml)
+        }
+        respond @moodle_internals 404
+
+        @dataroot_direct {
+            path /dataroot/*
+            not header X-Accel-Redirect *
+        }
+        respond @dataroot_direct 403
+
+        handle /dataroot/* {
+            root * /var/moodledata
+            uri strip_prefix /dataroot
+            file_server
+        }
     depends_on:
       - db
     volumes:
