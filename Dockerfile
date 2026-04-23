@@ -29,7 +29,7 @@ ENV PHP_OPCACHE_ENABLE=1 \
     PHP_UPLOAD_MAX_FILE_SIZE=512M \
     PHP_MAX_INPUT_VARS=5000 \
     PHP_DATE_TIMEZONE=Asia/Jakarta \
-    NGINX_WEBROOT=/var/www/html
+    NGINX_WEBROOT=/var/www/html/public
 
 COPY --chmod=755 ./entrypoint.d/ /etc/entrypoint.d
 COPY --chown=www-data:www-data ./nginx/site-opts.d/http.conf /etc/nginx/site-opts.d/http.conf
