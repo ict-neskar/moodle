@@ -32,6 +32,7 @@ services:
         # Also check for a directory index (try_files includes {path}/index.php) so
         # that requests like / are served by index.php, not r.php.
         @moodle_route {
+                not path /healthcheck
                 not path_regexp \.php(/|$)
                 not file {
                         try_files {path} {path}/index.php
