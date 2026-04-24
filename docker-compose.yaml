@@ -9,10 +9,6 @@ services:
       CADDY_PHP_SERVER_OPTIONS: split .php
       CADDY_SERVER_EXTRA_DIRECTIVES: |
         request_body {
-            max_size 2048MB
-        }
-
-        request_body {
                 max_size 2048MB
         }
 
