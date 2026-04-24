@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM serversideup/php:8.1-frankenphp
+FROM serversideup/php:8.3-frankenphp
 
 USER root
 
