@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     libicu-dev \
     libxml2-dev \
     libxslt-dev \
-    && docker-php-ext-install pdo_pgsql pgsql gd intl soap exif xsl mysqli 
+    && docker-php-ext-install pdo_pgsql pgsql gd intl soap exif xsl mysqli redis
 
 USER www-data
 
